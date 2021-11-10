@@ -1,0 +1,24 @@
+<select id="selectHomeGames" resultMap="Base_Column_List">
+	SELECT 
+	<include refid="Base_Column_List" />
+	FROM game
+	WHERE
+		1 = 1 
+		<if test="condition != null">
+			and (id = #{condition} OR title LIKE CONCAT(CONCAT('%',#{condition}),'%'))
+		</if>
+</select>
+
+
+<select id="selectHomeGamesByUser" resultMap="Base_Column_List">
+	SELECT 
+	<include refid="Base_Column_List" />
+	FROM game
+	WHERE
+		1 = 1 
+		<if test="condition != null">
+			AND (id = #{condition} OR title LIKE CONCAT(CONCAT('%',#{condition}),'%'))
+		</if>
+		AND owner_id = #{userId}
+</select>
+
