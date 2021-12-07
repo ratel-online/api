@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+	<!--定义日志文件的存储地址 -->
+	<springProperty scope="context" name="logPath" source="logging.file.path" />
+    <springProperty scope="context" name="serviceName" source="spring.application.name" />
+    <contextName>${spring.application.name}</contextName>
+    <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{traceId}] %-5level %logger{50}-%L %ex %msg%n"/>
+    <property name="log.maxHistory" value="60" />
+    <property name="log.maxFileSize" value="30" />
+
+	<!-- console for developer -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoder 默认配置为PatternLayoutEncoder -->
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+    
+    <!-- DEBUG -->
+    <appender name="debugAppender" class="ch.qos.logback.core.rolling.RollingFileAppender"><!-- 日志文件会滚动 -->
+        <!-- 文件路径 -->
+        <file>${logPath}/${serviceName}/debug.log</file><!-- 当前的日志文件存放路径 -->
+        <!-- 日志滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 历史日志文件的存放路径和名称 -->
+            <fileNamePattern>${logPath}/${serviceName}/debug/debug.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- 日志文件最大的保存历史 数量-->
+            <maxHistory>${log.maxHistory}</maxHistory>
+            <maxFileSize>${log.maxFileSize}MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>  <!-- 日志文件中日志的格式 -->
+        </encoder>
+    </appender>
+    
+    <!-- INFO -->
+	<appender name="infoAppender" class="ch.qos.logback.core.rolling.RollingFileAppender"><!-- 日志文件会滚动 -->
+        <!-- 文件路径 -->
+        <file>${logPath}/${serviceName}/info.log</file><!-- 当前的日志文件存放路径 -->
+        <!-- 日志滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 历史日志文件的存放路径和名称 -->
+            <fileNamePattern>${logPath}/${serviceName}/info/info.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- 日志文件最大的保存历史 数量-->
+            <maxHistory>${log.maxHistory}</maxHistory>
+            <maxFileSize>${log.maxFileSize}MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>  <!-- 日志文件中日志的格式 -->
+        </encoder>
+    </appender>
+    
+    <!-- WARN -->
+	<appender name="warnAppender" class="ch.qos.logback.core.rolling.RollingFileAppender"><!-- 日志文件会滚动 -->
+        <!-- 文件路径 -->
+        <file>${logPath}/${serviceName}/warn.log</file><!-- 当前的日志文件存放路径 -->
+        <!-- 日志滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 历史日志文件的存放路径和名称 -->
+            <fileNamePattern>${logPath}/${serviceName}/warn/warn.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- 日志文件最大的保存历史 数量-->
+            <maxHistory>${log.maxHistory}</maxHistory>
+            <maxFileSize>${log.maxFileSize}MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>  <!-- 日志文件中日志的格式 -->
+        </encoder>
+    </appender>
+    
+    <!-- ERROR -->
+	<appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender"><!-- 日志文件会滚动 -->
+        <!-- 文件路径 -->
+        <file>${logPath}/${serviceName}/error.log</file><!-- 当前的日志文件存放路径 -->
+        <!-- 日志滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 历史日志文件的存放路径和名称 -->
+            <fileNamePattern>${logPath}/${serviceName}/error/error.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- 日志文件最大的保存历史 数量-->
+            <maxHistory>${log.maxHistory}</maxHistory>
+            <maxFileSize>${log.maxFileSize}MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>  <!-- 日志文件中日志的格式 -->
+        </encoder>
+    </appender>
+	
+	<!-- RR日志 -->
+	<appender name="ReqResAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- 文件路径 -->
+        <file>${logPath}/${serviceName}/rr.log</file><!-- 当前的日志文件存放路径 -->
+        <!-- 日志滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 历史日志文件的存放路径和名称 -->
+            <fileNamePattern>${logPath}/${serviceName}/rr/rr.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- 日志文件最大的保存历史 数量-->
+            <maxHistory>${log.maxHistory}</maxHistory>
+            <maxFileSize>${log.maxFileSize}MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>  <!-- 日志文件中日志的格式 -->
+        </encoder>
+	</appender>
+	
+	<!-- Async appender begin -->
+	<appender name="asyncDebugAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="debugAppender" />
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>  <!-- 用过滤器，只接受DEBUG级别的日志信息，其余全部过滤掉 -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    
+    <appender name="asyncInfoAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="infoAppender" />
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    
+    <appender name="asyncWarnAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="warnAppender" />
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    
+    <appender name="asyncErrorAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="errorAppender" />
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    
+    <appender name="asyncReqResAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="ReqResAppender" />
+    </appender>
+	<!-- Async appender end -->
+	
+
+	<!-- myibatis log configure -->
+	<logger name="com.apache.ibatis" level="TRACE" />
+	<logger name="java.sql.Connection" level="DEBUG" />
+	<logger name="java.sql.Statement" level="DEBUG" />
+	<logger name="java.sql.PreparedStatement" level="DEBUG" />
+	
+	<logger name="com.isnico.api" level="debug" additivity="true">
+        <appender-ref ref="asyncDebugAppender" />
+        <appender-ref ref="asyncInfoAppender" />
+        <appender-ref ref="asyncWarnAppender" />
+        <appender-ref ref="asyncErrorAppender" />
+    </logger>
+    <!-- RR log -->
+    <logger name="RR" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT" />
+		<appender-ref ref="asyncReqResAppender"/>
+	</logger> 
+    
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="asyncInfoAppender" />
+        <appender-ref ref="asyncWarnAppender" />
+        <appender-ref ref="asyncErrorAppender" />
+    </root>
+
+</configuration>
