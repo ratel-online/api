@@ -28,4 +28,15 @@ public class UserService {
         BeanUtils.copyProperties(user, userResp);
         return userResp;
     }
+
+    public User getUserByUsername(String username){
+        User cond = new User();
+        cond.setUsername(username);
+        User user = userMapper.selectEntity(cond);
+        if(user != null && !user.getDeleted().equals(AppConst.FALSE)){
+            return user;
+        }
+        return null;
+
+    }
 }

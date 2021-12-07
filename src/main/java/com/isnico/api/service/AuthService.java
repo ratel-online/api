@@ -26,6 +26,8 @@ public class AuthService {
 
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private UserService userService;
 
     public LoginResp register(String username, String password, String name, String code) {
         String authCode = String.valueOf(redisUtil.get(EmailMsgTypeEnums.REGISTERED.getCode() + username));
@@ -72,11 +74,27 @@ public class AuthService {
      * @param code     邮箱验证码
      */
     @Transactional(rollbackFor = Exception.class)
-    public void forgetPassword(String username, String password, String code) {
+    public String forgetPassword(String username, String password, String code) {
         String authCode = String.valueOf(redisUtil.get(EmailMsgTypeEnums.FORGET_PASSWORD.getCode() + username));
         if (!Objects.equals(authCode.toLowerCase(Locale.ROOT), code.toLowerCase(Locale.ROOT))) {
             throw new BusinessException(ResultCode.ERROR_ON_AUTH_CODE_AUTH_FAIL);
         }
         // TODO
+        User user = userService.getUserByUsername(username);
+        if(user == null){
+            throw new BusinessException(ResultCode.ERROR_ON_USER_NOT_EXIST);
+        }
+        user.setPassword(StringUtil.md5(username + "@" + password));
+        int i = userMapper.updateSelective(user);
+        if(i == 1){
+            return "修改成功";
+        }else{
+            return "修改失败";
+        }
     }
+
+
+
+
+
 }

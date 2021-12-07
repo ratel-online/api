@@ -64,8 +64,8 @@ public class AuthController {
             @ApiParam(value = "验证码", required = true) @RequestParam String code
 
     ) {
-        authService.forgetPassword(username, password,code);
-        return Result.ok();
+        String msg = authService.forgetPassword(username, password,code);
+        return Result.ok(msg);
     }
 
 }
