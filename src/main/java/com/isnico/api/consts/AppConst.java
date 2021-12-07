@@ -12,10 +12,10 @@ public interface AppConst {
     String USER_TOKEN = "ratel:user:token@";
 
     //邮箱认证缓存key
-    String USER_REGISTER_AUTH_CODE = "ratel:user:register:auth:code@";
+//    String USER_REGISTER_AUTH_CODE = "ratel:user:register:auth:code@";
 
     //邮箱重置密码缓存key
-    String USER_RESET_PASSWORD_AUTH_CODE = "ratel:user:resetPassword:auth:code@";
+//    String USER_RESET_PASSWORD_AUTH_CODE = "ratel:user:resetPassword:auth:code@";
 
     // 正则
     String REGEX_EMAIL = "^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$";
