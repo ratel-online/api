@@ -43,7 +43,7 @@ public class MailController {
             @RequestParam EmailMsgTypeEnums type
     ) {
         String code = StringUtil.random(AppConst.MAIL_AUTH_CODE_LENGTH);
-        boolean success = mailUtil.sendSimpleMail(email, "NicoNicoNi! "+ (type.getNo()==1? "Registered":"Reset Password")+" Auth Code Mail !", "Auth Code: " + code);
+        boolean success = mailUtil.sendSimpleMail(email, "NicoNicoNi! "+ type.getText() +" Auth Code Mail !", "Auth Code: " + code);
         if (success) {
             redisUtil.set(type.getCode() + email, code, 5L, TimeUnit.MINUTES);
             return Result.ok();
