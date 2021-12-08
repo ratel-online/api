@@ -16,7 +16,8 @@ public class SwaggerConfig {
 
     @Bean
     public Docket managerDocument() {
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
                 .groupName("ratel")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.isnico.api.controller"))
@@ -31,4 +32,16 @@ public class SwaggerConfig {
                 .version("v1.0.0")
                 .build();
     }
+
+    @Bean
+    public Docket internalDocket() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("对内api")
+                .apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.isnico.api.internal.controller"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+
 }
