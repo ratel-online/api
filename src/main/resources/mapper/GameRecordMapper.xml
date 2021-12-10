@@ -18,7 +18,7 @@
         id, game_id, user_id, `group`, `score`, create_time, update_time, deleted
     </sql>
 
-    <select id="findByUserIdAndTypeOrderByCreatedTimeDesc" resultType="com.isnico.api.model.vo.UserScoreListResp">
+    <select id="findByUserIdAndGroupOrderByCreatedTimeDesc" resultType="com.isnico.api.model.vo.GameRecordListResp">
         select <include refid="Base_Column_List"></include>
         from game_record
         <where>
