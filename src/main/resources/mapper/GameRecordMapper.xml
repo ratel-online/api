@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isnico.api.mapper.GameRecordMapper">
+    <resultMap id="BaseResultMap" type="com.isnico.api.model.po.GameRecord">
+        <!--@mbg.generated-->
+        <!--@Table user_score-->
+        <id column="id" property="id"/>
+        <result column="game_id" property="gameId"/>
+        <result column="user_id" property="userId"/>
+        <result column="group" property="group"/>
+        <result column="score" property="score"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, game_id, user_id, `group`, `score`, create_time, update_time, deleted
+    </sql>
+
+    <select id="findByUserIdAndTypeOrderByCreatedTimeDesc" resultType="com.isnico.api.model.vo.UserScoreListResp">
+        select <include refid="Base_Column_List"></include>
+        from game_record
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="group != null">
+                and `group` = #{group}
+            </if>
+        </where>
+        order by created_time desc
+    </select>
+</mapper>
