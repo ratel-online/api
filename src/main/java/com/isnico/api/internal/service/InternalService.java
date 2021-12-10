@@ -9,8 +9,8 @@ import com.isnico.api.model.vo.UserResp;
 import com.isnico.api.model.vo.UserScoreListResp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -46,5 +46,24 @@ public class InternalService {
      */
     public List<UserScoreListResp> userScoreList(Long id, Integer type) {
         return userScoreMapper.findByUserIdAndTypeOrderByCreatedTimeDesc(id, type);
+    }
+
+    /**
+     * 修改用户积分
+     *
+     * @param userId 用户ID
+     * @param score  分数 增加传证书 减少传负数
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void editScore(Long userId, Long score) {
+        User cond = new User();
+        cond.setId(userId);
+        cond.setDeleted(AppConst.FALSE);
+        User user = userMapper.selectEntity(cond);
+        if (user == null) {
+            throw ResultCode.ERROR_ON_USER_NOT_EXIST.error();
+        }
+        user.setScore(user.getScore() + score);
+        userMapper.update(user);
     }
 }

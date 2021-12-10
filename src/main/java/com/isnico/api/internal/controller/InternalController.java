@@ -14,10 +14,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,7 +35,13 @@ public class InternalController {
         return Result.ok(userService.getUserInfo(Context.get().getId()));
     }
 
-    @Auth
+    @PostMapping("/editScore")
+    @ApiOperation(value = "修改用户积分")
+    public Result<Object> editScore(Long userId, Long score) {
+        userService.editScore(userId, score);
+        return Result.ok();
+    }
+
     @GetMapping("/userScoreList")
     @ApiOperation(value = "用户积分历史记录")
     @ApiImplicitParams({
