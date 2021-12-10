@@ -22,4 +22,14 @@ public enum UserScoreTypeEnums {
         this.value = value;
         this.desc = desc;
     }
+
+    public static UserScoreTypeEnums getByValue(int value) {
+        for (UserScoreTypeEnums typeEnums : UserScoreTypeEnums.values()) {
+            if (typeEnums.getValue() == value) {
+                return typeEnums;
+            }
+        }
+        return null;
+    }
+
 }

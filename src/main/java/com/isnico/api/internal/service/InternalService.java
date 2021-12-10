@@ -2,9 +2,11 @@ package com.isnico.api.internal.service;
 
 import com.isnico.api.consts.AppConst;
 import com.isnico.api.enums.ResultCode;
+import com.isnico.api.enums.UserScoreTypeEnums;
 import com.isnico.api.mapper.UserMapper;
 import com.isnico.api.mapper.UserScoreMapper;
 import com.isnico.api.model.po.User;
+import com.isnico.api.model.po.UserScore;
 import com.isnico.api.model.vo.UserResp;
 import com.isnico.api.model.vo.UserScoreListResp;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +14,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Eagga
@@ -53,9 +57,10 @@ public class InternalService {
      *
      * @param userId 用户ID
      * @param score  分数 增加传证书 减少传负数
+     * @param type   类型
      */
     @Transactional(rollbackFor = Exception.class)
-    public void editScore(Long userId, Long score) {
+    public void editScore(Long userId, Integer score, Integer type) {
         User cond = new User();
         cond.setId(userId);
         cond.setDeleted(AppConst.FALSE);
@@ -65,5 +70,14 @@ public class InternalService {
         }
         user.setScore(user.getScore() + score);
         userMapper.update(user);
+
+        UserScore userScore = new UserScore();
+        userScore.setCreatedTime(LocalDateTime.now());
+        userScore.setUpdateTime(LocalDateTime.now());
+        userScore.setUserId(userId);
+        userScore.setScore(score);
+        userScore.setType(type);
+        userScore.setDesc(Objects.requireNonNull(UserScoreTypeEnums.getByValue(type)).getDesc());
+        userScoreMapper.insert(userScore);
     }
 }
