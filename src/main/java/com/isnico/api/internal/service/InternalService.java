@@ -3,8 +3,12 @@ package com.isnico.api.internal.service;
 import com.isnico.api.consts.AppConst;
 import com.isnico.api.enums.ResultCode;
 import com.isnico.api.enums.UserScoreTypeEnums;
+import com.isnico.api.mapper.GameMapper;
+import com.isnico.api.mapper.GameRecordMapper;
 import com.isnico.api.mapper.UserMapper;
 import com.isnico.api.mapper.UserScoreMapper;
+import com.isnico.api.model.po.Game;
+import com.isnico.api.model.po.GameRecord;
 import com.isnico.api.model.po.User;
 import com.isnico.api.model.po.UserScore;
 import com.isnico.api.model.vo.UserResp;
@@ -15,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,6 +32,8 @@ public class InternalService {
 
     private final UserMapper userMapper;
     private final UserScoreMapper userScoreMapper;
+    private final GameRecordMapper gameRecordMapper;
+    private final GameMapper gameMapper;
 
     public UserResp getUserInfo(Long id) {
         User cond = new User();
@@ -79,5 +86,24 @@ public class InternalService {
         userScore.setType(type);
         userScore.setDesc(Objects.requireNonNull(UserScoreTypeEnums.getByValue(type)).getDesc());
         userScoreMapper.insert(userScore);
+    }
+
+    public int addUserGameRecord(Long userId, Long gameId, Integer group, Integer score) {
+        GameRecord gameRecord = new GameRecord();
+        gameRecord.setUserId(userId);
+        gameRecord.setGameId(gameId);
+        gameRecord.setGroup(group);
+        gameRecord.setScore(score);
+        return gameRecordMapper.insertSelective(gameRecord);
+    }
+
+    public int addGame(Integer type, Integer players, Long roomId, Date beginTime, Date endTime) {
+        Game game = new Game();
+        game.setType(type);
+        game.setPlayers(players);
+        game.setRoom_id(roomId);
+        game.setBegin_time(beginTime);
+        game.setEnd_time(endTime);
+        return gameMapper.insertSelective(game);
     }
 }

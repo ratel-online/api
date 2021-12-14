@@ -6,23 +6,27 @@ import org.nico.ourbatis.annotation.RenderPrimary;
 import java.util.Date;
 
 @Data
-public class GameRecord {
+public class Game {
 
     @RenderPrimary
     private Long id;
 
-    private Long gameId;
+    /**
+     * GameTypeEnums
+     */
+    private Integer type;
 
-    private Long userId;
+    private Integer players;
 
-    private Integer group;
+    private Long room_id;
 
-    private Integer score;
+    private Date begin_time;
+
+    private Date end_time;
 
     private Date createTime;
 
     private Date updateTime;
 
     private Integer deleted;
-
 }
