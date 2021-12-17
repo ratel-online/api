@@ -68,4 +68,17 @@ public class AuthController {
         return Result.ok(msg);
     }
 
+    @ApiOperation(value = "修改密码")
+    @PostMapping("/modifyPassword")
+    public Result<Object> modifyPassword(
+            @ApiParam(value = "账户", required = true) @Pattern(regexp = AppConst.REGEX_EMAIL) @RequestParam String username,
+            @ApiParam(value = "密码", required = true) @Pattern(regexp = AppConst.REGEX_PWD,
+                    message = "密码需要由长度为6~15的字母和数字组成") @RequestParam String password,
+            @ApiParam(value = "验证码", required = true) @RequestParam String code
+
+    ) {
+        String msg = authService.modifyPassword(username, password,code);
+        return Result.ok(msg);
+    }
+
 }

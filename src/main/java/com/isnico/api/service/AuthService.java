@@ -79,22 +79,42 @@ public class AuthService {
         if (!Objects.equals(authCode.toLowerCase(Locale.ROOT), code.toLowerCase(Locale.ROOT))) {
             throw new BusinessException(ResultCode.ERROR_ON_AUTH_CODE_AUTH_FAIL);
         }
-        // TODO
         User user = userService.getUserByUsername(username);
-        if(user == null){
+        if (user == null) {
             throw new BusinessException(ResultCode.ERROR_ON_USER_NOT_EXIST);
         }
         user.setPassword(StringUtil.md5(username + "@" + password));
         int i = userMapper.updateSelective(user);
-        if(i == 1){
+        if (i == 1) {
             return "修改成功";
-        }else{
+        } else {
             return "修改失败";
         }
     }
 
-
-
-
-
+    /**
+     * 修改密码
+     *
+     * @param username 用户名
+     * @param password 新密码
+     * @param code     邮箱验证码
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public String modifyPassword(String username, String password, String code) {
+        String authCode = String.valueOf(redisUtil.get(EmailMsgTypeEnums.MODIFY_PASSWORD.getCode() + username));
+        if (!Objects.equals(authCode.toLowerCase(Locale.ROOT), code.toLowerCase(Locale.ROOT))) {
+            throw new BusinessException(ResultCode.ERROR_ON_AUTH_CODE_AUTH_FAIL);
+        }
+        User user = userService.getUserByUsername(username);
+        if (user == null) {
+            throw new BusinessException(ResultCode.ERROR_ON_USER_NOT_EXIST);
+        }
+        user.setPassword(StringUtil.md5(username + "@" + password));
+        int i = userMapper.updateSelective(user);
+        if (i == 1) {
+            return "修改成功";
+        } else {
+            return "修改失败";
+        }
+    }
 }

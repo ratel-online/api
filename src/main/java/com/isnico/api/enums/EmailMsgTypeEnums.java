@@ -14,7 +14,8 @@ public enum EmailMsgTypeEnums {
      * 发送邮件枚举
      */
     REGISTERED("REGISTERED", "注册","Registered"),
-    FORGET_PASSWORD("FORGET_PASSWORD", "忘记密码","Reset Password");
+    FORGET_PASSWORD("FORGET_PASSWORD", "忘记密码","Reset Password"),
+    MODIFY_PASSWORD("MODIFY_PASSWORD", "修改密码","Modify Password");
 
     private final String code;
     private final String desc;
