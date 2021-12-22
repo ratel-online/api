@@ -68,10 +68,7 @@ public class InternalService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void editScore(Long userId, Integer score, Integer type) {
-        User cond = new User();
-        cond.setId(userId);
-        cond.setDeleted(AppConst.FALSE);
-        User user = userMapper.selectEntity(cond);
+        User user = userMapper.findUserLock(userId);
         if (user == null) {
             throw ResultCode.ERROR_ON_USER_NOT_EXIST.error();
         }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isnico.api.mapper.UserMapper">
+    <sql id="Base_Column_List">
+        id,
+        `name`,
+        avatar,
+        score,
+        victory,
+        defeat,
+        username,
+        `password`,
+        create_time,
+        update_time,
+        deleted
+    </sql>
+    <resultMap id="BaseResultMap" type="com.isnico.api.model.po.User">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="avatar" property="avatar"/>
+        <result column="score" property="score"/>
+        <result column="victory" property="victory"/>
+        <result column="defeat" property="defeat"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+
+    <select id="findUserLock" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where id = #{id} for update
+    </select>
+</mapper>
